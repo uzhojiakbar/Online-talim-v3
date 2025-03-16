@@ -3,12 +3,20 @@ import { NavLink } from "react-router-dom";
 import { useFan } from "../../../Hooks/useFan";
 
 function Leson() {
-  const { fan, setFan } = useFan();
+  const { data: fan, isLoading, isError } = useFan();
+
+  if (isLoading) {
+    return <h1 className="text-xl text-white text-center">Yuklanmoqda...</h1>;
+  }
+
+  if (isError) {
+    return <h1 className="text-xl text-red-500 text-center">Xatolik yuz berdi!</h1>;
+  }
 
   return (
     <div className="px-3 sm:px-6 md:px-12 mt-6 grid lg:grid-cols-3 gap-8 sm:grid-cols-2 grid-cols-1">
       {fan?.length ? (
-        fan?.map((v) => (
+        fan.map((v) => (
           <NavLink
             to={`/profile/${v.nomi}`}
             key={v.nomi}
@@ -26,7 +34,7 @@ function Leson() {
           </NavLink>
         ))
       ) : (
-        <h1 className="text-xl">Fanlar mavjud emas</h1>
+        <h1 className="text-xl text-white text-center">Fanlar mavjud emas</h1>
       )}
     </div>
   );

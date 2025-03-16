@@ -4,11 +4,15 @@ import useFan from '../../Hooks/useFan';
 import { NavLink } from 'react-router-dom';
 
 function Homesection1() {
-    const { fan, loading, error } = useFan();
+    const { data: fan, isLoading, isError } = useFan();
 
-    if (loading) return <p className="text-white text-center mt-12 text-2xl">Yuklanmoqda...</p>;
-    if (error) return <p className="text-red-500 text-center">{error}</p>;
-    if (!fan || fan?.length === 0) return <h1 className="text-white text-center">Hozircha fanlar mavjud emas</h1>;
+    if (isLoading) {
+        return <div className="text-white text-center text-xl">Yuklanmoqda...</div>;
+    }
+
+    if (isError) {
+        return <div className="text-red-500 text-center text-xl">Xatolik yuz berdi!</div>;
+    }
 
     return (
         <div id="darslar" className="lg:p-16 px-4 overflow-hidden">
