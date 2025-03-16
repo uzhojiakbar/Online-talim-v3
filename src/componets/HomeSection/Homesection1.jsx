@@ -7,11 +7,11 @@ function Homesection1() {
     const { data: fan, isLoading, isError } = useFan();
 
     if (isLoading) {
-        return <div className="text-white text-center text-xl">Yuklanmoqda...</div>;
+        return <div className="text-white text-center text-xl mt-20">Yuklanmoqda...</div>;
     }
 
     if (isError) {
-        return <div className="text-red-500 text-center text-xl">Xatolik yuz berdi!</div>;
+        return <div className="text-red-500 text-center text-xl mt-20">Xatolik yuz berdi</div>;
     }
 
     return (
