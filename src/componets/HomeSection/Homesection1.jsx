@@ -21,7 +21,7 @@ function Homesection1() {
                 <p className="text-[18px]">Aniq reja bilan yaratilgan darsliklar</p>
             </div>
             <div className="mt-12 p-3 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8">
-                {fan?.map((item, index) => (
+                {fan && fan?.map((item, index) => (
                     <div
                         key={index}
                         data-aos="fade-up"
