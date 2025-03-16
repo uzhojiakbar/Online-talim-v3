@@ -14,14 +14,14 @@ const QuizUser = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [score, setScore] = useState(0);
   const [attemptsLeft, setAttemptsLeft] = useState(2);
-  const [currentQuizIndex, setCurrentQuizIndex] = useState(0);  // 0-dan boshlanadi
+  const [currentQuizIndex, setCurrentQuizIndex] = useState(0); // 0-dan boshlanadi
 
-  const { nomi, dasrnomi} = useParams();
+  const { nomi, dasrnomi } = useParams();
   const { getTest, getQuizzes: quizzes } = UseGetTest();
 
   // Testlarni yuklash
   useEffect(() => {
-    getTest(nomi, dasrnomi);  // API orqali testlarni olib keladi
+    getTest(nomi, dasrnomi); // API orqali testlarni olib keladi
   }, [nomi, dasrnomi]);
 
   const handleAnswerChange = (selectedVariantId) => {
@@ -31,7 +31,7 @@ const QuizUser = () => {
     }));
   };
 
-  const finish = JSON.parse(localStorage.getItem('finish'))
+  const finish = JSON.parse(localStorage.getItem("finish"));
 
   const handleNextQuiz = () => {
     if (!userAnswers[quizzes[currentQuizIndex]?.id]) {
@@ -67,7 +67,9 @@ const QuizUser = () => {
     setCurrentQuizIndex(0);
   };
 
-  const correctPercentage = quizzes.length ? Math.floor((score / quizzes.length) * 100) : 0;
+  const correctPercentage = quizzes.length
+    ? Math.floor((score / quizzes.length) * 100)
+    : 0;
 
   const chartData = {
     labels: ["To'g'ri", "Noto'g'ri"],
@@ -84,7 +86,9 @@ const QuizUser = () => {
     <div className="min-h-screen bg-white flex flex-col items-center py-10 px-4">
       <ProfileNavbar />
       <h1 className="text-2xl font-bold text-gray-700 mb-4"> Fan: {nomi}</h1>
-      <h1 className="text-2xl font-bold text-gray-700 mb-8">Dars: {dasrnomi}</h1>
+      <h1 className="text-2xl font-bold text-gray-700 mb-8">
+        Dars: {dasrnomi}
+      </h1>
 
       {quizzes.length === 0 ? (
         <p className="text-gray-700 text-xl">Savollar yuklanmoqda...</p>
@@ -127,7 +131,10 @@ const QuizUser = () => {
                     id={`quiz-${quizzes[currentQuizIndex]?.id}-${v.id}`}
                     name={`quiz-${quizzes[currentQuizIndex]?.id}`}
                     value={v.id}
-                    checked={userAnswers[quizzes[currentQuizIndex]?.id] === v.id.toString()}
+                    checked={
+                      userAnswers[quizzes[currentQuizIndex]?.id] ===
+                      v.id.toString()
+                    }
                     onChange={() => handleAnswerChange(v.id.toString())}
                     className="w-4 h-4 text-green-500 focus:ring-green-500 border-gray-300 rounded-full transition duration-200 mr-3"
                   />
@@ -144,14 +151,24 @@ const QuizUser = () => {
           <button
             onClick={handleNextQuiz}
             disabled={!userAnswers[quizzes[currentQuizIndex]?.id]}
-            className={`bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 transition mt-6 ${!userAnswers[quizzes[currentQuizIndex]?.id] ? "opacity-50 cursor-not-allowed" : ""}`}>
+            className={`bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 transition mt-6 ${
+              !userAnswers[quizzes[currentQuizIndex]?.id]
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+          >
             Keyingisiga o'tish
           </button>
         </div>
       )}
-      {
+      {/* {
         finish && correctPercentage >= 70 ? <Certificate correctPercentage={correctPercentage} fannomi={nomi} /> : ""
-      }
+      } */}
+      {finish ? (
+        <Certificate correctPercentage={correctPercentage} fannomi={nomi} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

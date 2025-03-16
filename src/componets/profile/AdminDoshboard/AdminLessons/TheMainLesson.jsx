@@ -89,7 +89,7 @@ function TheMainLesson() {
   };
 
   const nav = useNavigate();
-  const navigate = ()=>{
+  const navigate = () => {
     nav(`/admin/${nomi}/${darsnomi}/quizAmin`)
   }
 
@@ -121,17 +121,17 @@ function TheMainLesson() {
 
 
         <Button
-        
-        onClick={navigate}
-        style={{
-          display: "flex",
-          gap: "10px",
-          alignItems: "center",
-        }}
-      >
-        <div className="fa-solid text-[16px] fa-plus text-[blue]"></div>
-        <div>Test qo'shish</div>
-      </Button>
+
+          onClick={navigate}
+          style={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+          }}
+        >
+          <div className="fa-solid text-[16px] fa-plus text-[blue]"></div>
+          <div>Test qo'shish</div>
+        </Button>
       </div>
 
       {/* Modal - Mavzu qo'shish */}

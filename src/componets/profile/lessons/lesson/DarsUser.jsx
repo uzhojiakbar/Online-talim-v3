@@ -72,16 +72,15 @@ function DarsUser() {
         width="350"
       >
         <div className="p-6 space-y-4">
-          <h2 className="text-lg font-bold text-white border-b border-gray-600 pb-2">
-            Darslar Ro'yxati
+          <h2 className="text-lg mt-[62px] font-bold text-white border-b border-gray-600 pb-2">
           </h2>
           {fanMavzulari.length > 0 ? (
             <div className=" space-y-2 ">
               {fanMavzulari?.map((item) => (
                 <NavLink
-                  onClick={() => mavZuMalumotlari(item.nomi)}
-                  key={item.id}
-                  to={`/profile/${nomi}/${item.nomi}`}
+                  onClick={() => mavZuMalumotlari(item?.nomi)}
+                  key={item?.id}
+                  to={`/profile/${nomi}/${item?.nomi}`}
                   className={({ isActive }) =>
                     isActive
                       ? "block bg-blue-600 hover:bg-gray-600 text-white p-3 rounded-lg shadow"
@@ -89,10 +88,10 @@ function DarsUser() {
                   }
                 >
                   <p
-                    onClick={() => setDarsnomi(item.nomi)}
+                    onClick={() => setDarsnomi(item?.nomi)}
                     className="truncate font-medium"
                   >
-                    {item.nomi}
+                    {item?.nomi}
                   </p>
                 </NavLink>
               ))}
@@ -118,16 +117,16 @@ function DarsUser() {
                   mavZuMalumotlari(item.nomi);
                   setDrawerVisible(false);
                 }}
-                key={item.id}
-                to={`/profile/${nomi}/${item.nomi}`}
+                key={item?.id}
+                to={`/profile/${nomi}/${item?.nomi}`}
                 className={({ isActive }) =>
                   isActive
                     ? " block bg-blue-600 hover:bg-gray-600 text-white p-3 rounded-lg shadow"
                     : "block bg-gray-600 hover:bg-gray-500 text-gray-300 p-3 rounded-lg"
                 }
               >
-                <p onClick={() => setDarsnomi(item.nomi)} className="line-clamp-1">
-                  {item.nomi}
+                <p onClick={() => setDarsnomi(item?.nomi)} className="line-clamp-1">
+                  {item?.nomi}
                 </p>
               </NavLink>
             ))
@@ -138,9 +137,9 @@ function DarsUser() {
       </Drawer>
 
       <Layout>
-        <Content className="relative bg-slate-800 h-screen p-8">
+        <Content className="relative bg-slate-800  p-8 max-sm:p-2">
           {load && (
-            <div className="bg-slate-200 z-50 w-full min-h-[100vh] top-0 left-0 flex justify-center items-center">
+            <div className="bg-slate-200 z-50 w-full h-[100%] z-[100] absolute top-0 left-0 flex justify-center items-center">
               <ThreeCircles
                 visible={true}
                 height="100"
@@ -157,15 +156,15 @@ function DarsUser() {
               <h1 className="text-2xl font-bold">Darslar mavjud emas</h1>
             </div>
           ) : (
-            <div className="overflow-y-auto h-full p-6 pt-20">
+            <div className="overflow-y-auto h-full p-2 pt-20">
               <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
                 <h1 className="text-2xl lg:text-4xl font-extrabold mb-4 text-white">{nomi}</h1>
-                <p className="text-gray-300 text-xl">{data.name}</p>
-                <div className="mt-3 text-gray-400 leading-relaxed">{data.desc}</div>
+                <p className="text-gray-300 text-xl">{data?.name}</p>
+                <div className="mt-3 text-gray-400 leading-relaxed">{data?.desc}</div>
                 <div
                   className="mt-6 iframevid p-1"
                   id="embedContainer"
-                  dangerouslySetInnerHTML={{ __html: data.embed }}
+                  dangerouslySetInnerHTML={{ __html: data?.embed }}
                 />
                 <div className="flex">
                   <NavLink
