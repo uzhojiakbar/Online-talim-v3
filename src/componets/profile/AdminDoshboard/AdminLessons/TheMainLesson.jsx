@@ -5,7 +5,6 @@ import { Button, Modal, Input } from 'antd';
 import Dars from './Dars';
 import MavzuData from '../../../../Hooks/MavzuData';
 import updateTopic from '../../../../Hooks/updateTopic';
-import usedelTopic from '../../../../Hooks/usedelTopic';
 const { TextArea } = Input;
 
 function TheMainLesson() {
