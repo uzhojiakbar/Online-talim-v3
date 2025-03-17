@@ -29,7 +29,7 @@ function Leson() {
               <p className="text-slate-300">{v.desc}</p>
             </div>
             <div className="pt-4">
-              <p className="text-xl text-gray-400">Ustoz {v.teacher}</p>
+              <p className="text-xl text-gray-400"> {v.teacher}</p>
             </div>
           </NavLink>
         ))

@@ -96,7 +96,6 @@ function TheMainLesson() {
   return (
     <div className="bg-slate-100 w-[100%] pt-24 p-8 overflow-auto max-md:pl-8 pl-[27%]">
       <h1 className="text-3xl mb-4">{nomi}</h1>
-
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-[20px] mt-[20px] overflow-auto">
         <Button onClick={showModal}
           style={{

@@ -7,7 +7,7 @@ import AddFan from '../../../../Hooks/AddFan';
 const { TextArea } = Input;
 
 function Addlesson() {
-    const { fan, loading } = useFan();
+    const { data: fan, loading, isError } = useFan();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [subjectName, setSubjectName] = useState("");
     const [description, setDescription] = useState("");
@@ -38,8 +38,6 @@ function Addlesson() {
     };
 
 
-
-
     return (
         <div>
             <Modal
@@ -49,7 +47,7 @@ function Addlesson() {
                         type="primary"
                         className='mt-6 py-4'
                         block
-                    >
+                    >   
                         Qo'shish
                     </Button>,
                 ]}
@@ -71,9 +69,9 @@ function Addlesson() {
                 />
             </Modal>
 
-            <h1 className='text-2xl font-semibold'>Mavjud Fanlar</h1>
+            <h1 className='text-2xl font-semibold max-sm:text-xl'>Mavjud Fanlar</h1>
 
-            <div className='mt-6 grid lg:grid-cols-3 sm:grid-cols-2 gap-8 grid-cols-1 pb-12'>
+            <div className='mt-2 grid lg:grid-cols-3 sm:grid-cols-2 gap-8 grid-cols-1 pb-12'>
                 <Button
                     type="primary"
                     className='p-6 rounded-lg shadow-lg h-full'
@@ -85,7 +83,7 @@ function Addlesson() {
                 </Button>
 
                 {loading && <div className='loaderWindow'><div className='loader'></div></div>}
-                {fan?.map((i, index) => (
+                {fan && fan?.map((i, index) => (
                     <NavLink
                         key={index}
                         to={`/admin/${i.nomi ? i.nomi : '/'}`}

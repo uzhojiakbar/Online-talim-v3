@@ -66,7 +66,7 @@ const handleDeleteFan = () => {
         </div>
       )}
       <AdminNav />
-      <h1 onClick={handleSidebarToggle} className="text-2xl text-black z-[2000] md:hidden fixed left-4 cursor-pointer">
+      <h1 onClick={handleSidebarToggle} className="text-2xl text-black z-[2000] md:hidden fixed left-4 cursor-pointer max-sm:top-4 max-md:top-4">
         {sidebarOpen ? "✖" : "☰"}
       </h1>
 

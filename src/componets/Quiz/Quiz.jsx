@@ -85,8 +85,8 @@ const QuizUser = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center py-10 px-4">
       <ProfileNavbar />
-      <h1 className="text-2xl font-bold text-gray-700 mb-4"> Fan: {nomi}</h1>
-      <h1 className="text-2xl font-bold text-gray-700 mb-8">
+      <h1 className="text-2xl font-bold text-gray-700 mb-4  max-sm:text-xl mt-12"> Fan: {nomi}</h1>
+      <h1 className="text-2xl font-bold text-gray-700 mb-8 max-sm:text-xl">
         Dars: {dasrnomi}
       </h1>
 

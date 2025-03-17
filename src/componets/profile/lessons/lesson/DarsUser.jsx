@@ -59,7 +59,7 @@ function DarsUser() {
       <Button
         type="primary"
         onClick={() => setDrawerVisible(true)}
-        className="absolute z-[1000] md:hidden top-5 left-4"
+        className="fixed z-[1000] md:hidden top-5 left-4"
       >
         ☰
       </Button>
@@ -139,7 +139,7 @@ function DarsUser() {
       <Layout>
         <Content className="relative bg-slate-800  p-8 max-sm:p-2">
           {load && (
-            <div className="bg-slate-200 z-50 w-full h-[100%] z-[100] absolute top-0 left-0 flex justify-center items-center">
+            <div className="bg-slate-200 z-50 w-full h-[97%] max-sm:h-screen z-[100] absolute top-0 left-0 flex justify-center items-center">
               <ThreeCircles
                 visible={true}
                 height="100"

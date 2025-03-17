@@ -13,7 +13,7 @@ function Profile() {
           <img src={cat} alt="user" className='w-[200px] h-[200px] object-cover rounded-full mix-blend-screen mx-auto border p-1' />
           <h1 className="text-[24px] mt-3 font-semibold">{storedArray?.firstname} {storedArray?.lastname}</h1>
         </div>
-        <h1 className='ml-3 sm:ml-6 md:ml-12 text-3xl mt-12'>Fanlar</h1>
+        <h1 className='max-sm:ml-6 sm:ml-6 md:ml-12 text-3xl mt-12 max-sm:text-2xl '>Fanlar</h1>
         <Leson />
       </div>
       <Footer />

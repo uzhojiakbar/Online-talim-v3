@@ -27,18 +27,18 @@ const AdminPage = () => {
       setSelectedRole(response.data.role)
     }
     catch (err) {
-      console.log('yangiilashda hatoli keldiu', err)
+      console.log('yangiilashda hatoli keldi', err)
     }
   };
 
   return (
     <div className="bg-slate-100 min-h-[100vh]">
       <AdminNav />
-      <div className="flex-1 p-6 pt-28">
+      <div className="flex-1 p-6 max-sm:px-2 pt-28">
         <Addlesson />
         <div id="manage-users">
-          <h3 className="text-2xl font-semibold mb-4">Foydalanuvchilarni boshqarish</h3>
-          <div className="bg-white py-6 p-6 border-gray-300 rounded-lg shadow-lg">
+          <h3 className="text-2xl font-semibold mb-4 max-sm:text-xl">Foydalanuvchilarni boshqarish</h3>
+          <div className="bg-white py-6 p-6 max-sm:px-2 border-gray-300 rounded-lg shadow-lg">
             {userData?.map((item) => (
               <div
                 className="bg-slate-100 p-2 rounded-md mt-4 flex flex-wrap justify-between items-center gap-4"
