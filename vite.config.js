@@ -13,5 +13,9 @@ export default defineConfig({
         // pathRewrite: { '^/api': '' }, // Agar yo'lni o'zgartirmoqchi bo'lsangiz
       },
     },
+    port: 5014,
+  },
+  preview: {
+    port: 5014,
   },
 });
