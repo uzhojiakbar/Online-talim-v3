@@ -37,7 +37,6 @@ function Addlesson() {
         }
     };
 
-
     return (
         <div>
             <Modal
@@ -96,7 +95,6 @@ function Addlesson() {
                                 <p className="small">{i.desc}</p>
                                 <div className='flex justify-between small items-center'>
                                     <p>{i.teacher}</p>
-                                    {/* <p className='flex items-center gap-2 small'>{i.views} <span><FaEye /> </span></p> */}
                                 </div>
                             </a>
                         </div>

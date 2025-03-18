@@ -12,33 +12,32 @@ import usedelTopic from '../../../../Hooks/usedelTopic';
 function LessonTopic() {
   const { nomi, darsnomi } = useParams();
   const { fan, loading } = useFan();
-  const { addTopics, fanMavzulari } = useAddTopic();
+  const { data: fanMavzulari = [] } = useAddTopic(nomi);
   const { deleteDars } = delFan();
   const { delTopic } = usedelTopic();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [selectedTopic, setSelectedTopic] = useState(null);
-
   const [isModalOpen1, setIsModalOpen1] = useState(false);
-
-const handleDeleteFan = () => {
-  deleteDars(nomi); 
-  setIsModalOpen1(false); 
-  nav("/admin"); 
-};
 
   const nav = useNavigate();
 
   useEffect(() => {
-    addTopics(nomi);
+    // LocalStorage'dan oldin tanlangan darsni olish
+    const savedLesson = localStorage.getItem("adminPath");
+
     setTimeout(() => {
       if (!darsnomi?.length && fanMavzulari.length > 0) {
-        nav(`/admin/${fanMavzulari[0].fan}/${fanMavzulari[0].nomi}`);
+        const defaultLesson = savedLesson && fanMavzulari.some(i => i.nomi === savedLesson)
+          ? savedLesson // Agar oldin tanlangan dars mavjud bo'lsa, o'shanga yo'naltiramiz
+          : fanMavzulari[0].nomi; // Aks holda birinchi darsni tanlaymiz
+        
+        localStorage.setItem("adminPath", defaultLesson);
+        nav(`/admin/${fanMavzulari[0].fan}/${defaultLesson}`);
       }
     }, 1000);
-  }, [fan, darsnomi]);
+  }, [fanMavzulari, darsnomi]);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -49,14 +48,12 @@ const handleDeleteFan = () => {
     setIsModalOpen(true);
   };
 
-
   const handleDeleteTopic = () => {
     if (selectedTopic) {
       delTopic(nomi, selectedTopic);
       setIsModalOpen(false);
     }
   };
-
 
   return (
     <div className='bg-slate-100 flex relative h-[100vh] overflow-hidden'>
@@ -78,7 +75,8 @@ const handleDeleteFan = () => {
                 to={`/admin/${i?.fan}/${i?.nomi}`}
                 className={({ isActive }) =>
                   isActive ? "border-b block p-3 px-3 rounded-sm bg-indigo-500 text-white" : "border-b block p-3 px-3 rounded-sm hover:bg-indigo-500 hover:text-white"
-                }>
+                }
+                onClick={() => localStorage.setItem("adminPath", i.nomi)}>
                 <div className='flex justify-between items-center'>
                   <p className='w-full truncate'>{i?.nomi}</p>
                   <span onClick={(e) => { e.preventDefault(); openDeleteModal(i?.nomi); }} className='text-red-500 cursor-pointer'>
@@ -112,8 +110,12 @@ const handleDeleteFan = () => {
       <Modal
         title="Ogohlantirish"
         open={isModalOpen1}
-        onOk={handleDeleteFan} // Tasdiqlash tugmasi bosilganda
-        onCancel={() => setIsModalOpen1(false)} // Bekor qilish tugmasi bosilganda
+        onOk={() => {
+          deleteDars(nomi);
+          setIsModalOpen1(false);
+          nav("/admin");
+        }}
+        onCancel={() => setIsModalOpen1(false)}
       >
         <p className='text-red-500'>Fanni o‘chirmoqchimisiz?</p>
       </Modal>

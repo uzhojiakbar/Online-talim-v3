@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminNav from "../AdminNav";
 import { instance } from "../../../../Hooks/api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UseGetTest from "../../../../Hooks/useGetTests";
 import useDeletequiz from "../../../../Hooks/useDeletequiz";
 
@@ -76,7 +76,7 @@ const QuizAdmin = () => {
                 ],
                 correctOption: "",
             });
-            setEditingQuizId(null); 
+            setEditingQuizId(null);
         } catch (err) {
             console.error("Xatolik test qo'shishda yoki yangilashda", err);
             setError("Test qo'shishda yoki yangilashda xatolik yuz berdi");
@@ -106,13 +106,23 @@ const QuizAdmin = () => {
         }
     };
 
-    
+    const nav = useNavigate();
+    const handlePath = () => {
+        const savedPath = localStorage.getItem("adminPath");
+        if (savedPath) {
+            nav(`/admin/${nomi}/${savedPath}`) // Agar oldin saqlangan yo'l bo'lsa, unga qaytaradi
+        } else {
+            nav(`/admin/${nomi}`); // Agar yo'q bo'lsa, asosiy sahifaga qaytaradi
+        }
+    };
+
 
     return (
         <>
             <AdminNav />
-            <div className="min-h-screen bg-white flex flex-col items-center py-10 px-4 pt-24">
+            <div className="min-h-screen relative bg-white flex flex-col items-center py-10 px-4 pt-24">
                 <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Testlar boshqaruvi</h1>
+                {/* <button className="bg-blue-500 text-white px-12 py-3 absolute left-12">Ortga qaytish</button> */}
 
                 <div className="w-full max-w-4xl bg-gray-100 p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold text-gray-700 mb-4">
@@ -202,10 +212,15 @@ const QuizAdmin = () => {
                 </div>
 
                 <div>
-                    {getQuizzes.length && <button onClick={deleteAllTests} className={`bg-red-500 px-6 py-1 text-white`}>
+                    {getQuizzes.length && <button onClick={deleteAllTests} className={`bg-red-500 px-6 py-2 mt-3 text-white`}>
                         {`Barcha testlani ochirish`}
                     </button>}
                 </div>
+                <button onClick={handlePath} class="mt-4 cursor-pointer duration-200 hover:scale-125 active:scale-100" title="Go Back">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" class="stroke-blue-300">
+                        <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M11 6L5 12M5 12L11 18M5 12H19"></path>
+                    </svg>
+                </button>
             </div>
         </>
     );

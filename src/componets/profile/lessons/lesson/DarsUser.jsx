@@ -8,30 +8,32 @@ import { ThreeCircles } from "react-loader-spinner";
 import Scroltop from "../../../Scroltop";
 
 const { Sider, Content } = Layout;
-
 function DarsUser() {
   const { nomi } = useParams();
   const navigate = useNavigate();
-  const { fanMavzulari, addTopics } = useAddTopic();
+  const { data: fanMavzulari = [] } = useAddTopic(nomi);
   const [load, setLoad] = useState(false);
   const [data, setData] = useState({});
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [darsnomi, setDarsnomi] = useState("");
 
-  useEffect(() => {
-    addTopics(nomi);
-  }, [nomi]);
+  const [darsnomi, setDarsnomi] = useState(() => {
+    return localStorage.getItem("selectedLesson") || null;
+  });
 
-  // Birinchi darsga yo'naltirish
   useEffect(() => {
     if (fanMavzulari.length > 0) {
-      const firstTopic = fanMavzulari[0].nomi;
-      if (!darsnomi) {
-        setDarsnomi(firstTopic);
+      const storedLesson = localStorage.getItem("selectedLesson");
+      if (storedLesson) {
+        navigate(`/profile/${nomi}/${storedLesson}`);
+        setDarsnomi(storedLesson);
+      } else {
+        const firstTopic = fanMavzulari[0].nomi;
         navigate(`/profile/${nomi}/${firstTopic}`);
+        setDarsnomi(firstTopic);
+        localStorage.setItem("selectedLesson", firstTopic);
       }
     }
-  }, [fanMavzulari, nomi, darsnomi, navigate]);
+  }, [fanMavzulari, nomi, navigate]);
 
   useEffect(() => {
     if (darsnomi) {
@@ -39,22 +41,28 @@ function DarsUser() {
     }
   }, [darsnomi]);
 
-
   const mavZuMalumotlari = async (darsnomi) => {
     setLoad(true);
     try {
       const response = await instance.get(`/api/topic/${nomi}/${darsnomi}`);
       setData(response.data);
+      console.log(response.data)
+      localStorage.setItem('isFinish',response?.data?.isFinish)
     } catch (error) {
       console.error("Xatolik:", error);
     } finally {
       setLoad(false);
     }
   };
-  localStorage.setItem("finish", (data?.isFinish))
+
+  const handleSelectLesson = (lesson) => {
+    setDarsnomi(lesson);
+    localStorage.setItem("selectedLesson", lesson);
+    navigate(`/profile/${nomi}/${lesson}`);
+  };
 
   return (
-    <Layout className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-700 text-white">
+    <Layout className="pt-[60px] min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-700 text-white">
       <ProfileNavbar />
       <Button
         type="primary"
@@ -63,121 +71,71 @@ function DarsUser() {
       >
         ☰
       </Button>
-
-      {/* Sidebar */}
-      <Sider
-        breakpoint="md"
-        collapsedWidth="0"
-        className="hidden md:block bg-gray-800 border-r border-gray-700"
-        width="350"
-      >
+      <Sider width={350} className="hidden md:block bg-gray-800 border-r border-gray-700">
         <div className="p-6 space-y-4">
-          <h2 className="text-lg mt-[62px] font-bold text-white border-b border-gray-600 pb-2">
-          </h2>
           {fanMavzulari.length > 0 ? (
-            <div className=" space-y-2 ">
-              {fanMavzulari?.map((item) => (
-                <NavLink
-                  onClick={() => mavZuMalumotlari(item?.nomi)}
-                  key={item?.id}
-                  to={`/profile/${nomi}/${item?.nomi}`}
-                  className={({ isActive }) =>
-                    isActive
-                      ? "block bg-blue-600 hover:bg-gray-600 text-white p-3 rounded-lg shadow"
-                      : "block bg-gray-600 hover:bg-gray-500 text-gray-300 p-3 rounded-lg"
-                  }
-                >
-                  <p
-                    onClick={() => setDarsnomi(item?.nomi)}
-                    className="truncate font-medium"
-                  >
-                    {item?.nomi}
-                  </p>
-                </NavLink>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-400">Darslar mavjud emas</p>
-          )}
-        </div>
-      </Sider>
-
-      <Drawer
-        title="Mavzular ro'yxati"
-        placement="left"
-        onClose={() => setDrawerVisible(false)}
-        visible={drawerVisible}
-        bodyStyle={{ backgroundColor: "#1f2937", color: "white" }}
-      >
-        <div className="space-y-4 ">
-          {fanMavzulari.length > 0 ? (
-            fanMavzulari?.map((item) => (
+            fanMavzulari.map((item) => (
               <NavLink
-                onClick={() => {
-                  mavZuMalumotlari(item.nomi);
-                  setDrawerVisible(false);
-                }}
-                key={item?.id}
-                to={`/profile/${nomi}/${item?.nomi}`}
+                key={item.id}
+                to={`/profile/${nomi}/${item.nomi}`}
+                onClick={() => handleSelectLesson(item.nomi)}
                 className={({ isActive }) =>
-                  isActive
-                    ? " block bg-blue-600 hover:bg-gray-600 text-white p-3 rounded-lg shadow"
-                    : "block bg-gray-600 hover:bg-gray-500 text-gray-300 p-3 rounded-lg"
+                  isActive ? "block bg-blue-600 text-white p-3 rounded-lg" : "block bg-gray-600 text-gray-300 p-3 rounded-lg"
                 }
               >
-                <p onClick={() => setDarsnomi(item?.nomi)} className="line-clamp-1">
-                  {item?.nomi}
-                </p>
+                {item.nomi}
               </NavLink>
             ))
           ) : (
             <p className="text-gray-400">Darslar mavjud emas</p>
           )}
         </div>
+      </Sider>
+      <Drawer
+        title="Mavzular ro'yxati"
+        placement="left"
+        onClose={() => setDrawerVisible(false)}
+        visible={drawerVisible}
+      >
+        {fanMavzulari?.map((item) => (
+          <NavLink
+            key={item.id}
+            to={`/profile/${nomi}/${item.nomi}`}
+            onClick={() => {
+              handleSelectLesson(item.nomi);
+              setDrawerVisible(false);
+            }}
+            className={({ isActive }) =>
+              isActive ? "block bg-blue-600 text-white p-3 rounded-lg" : "block bg-gray-600 text-gray-300 p-3 rounded-lg"
+            }
+          >
+            {item.nomi}
+          </NavLink>
+        ))}
       </Drawer>
-
       <Layout>
-        <Content className="relative bg-slate-800  p-8 max-sm:p-2">
+        <Content className="relative bg-slate-800 p-8">
           {load && (
-            <div className="bg-slate-200 z-50 w-full h-[97%] max-sm:h-screen z-[100] absolute top-0 left-0 flex justify-center items-center">
-              <ThreeCircles
-                visible={true}
-                height="100"
-                width="100"
-                color="blue"
-                ariaLabel="three-circles-loading"
-                wrapperStyle={{}}
-                wrapperClass="" mavjud
-              />
+            <div className="absolute inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50">
+              <ThreeCircles height="100" width="100" color="blue" />
             </div>
           )}
-          {fanMavzulari.length === 0 ? (
-            <div className="text-center text-gray-400 mt-16">
-              <h1 className="text-2xl font-bold">Darslar mavjud emas</h1>
-            </div>
-          ) : (
-            <div className="overflow-y-auto h-full p-2 pt-20">
-              <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
-                <h1 className="text-2xl lg:text-4xl font-extrabold mb-4 text-white">{nomi}</h1>
-                <p className="text-gray-300 text-xl">{data?.name}</p>
-                <div className="mt-3 text-gray-400 leading-relaxed">{data?.desc}</div>
-                <div
-                  className="mt-6 iframevid p-1"
-                  id="embedContainer"
-                  dangerouslySetInnerHTML={{ __html: data?.embed }}
-                />
-                <div className="flex">
-                  <NavLink
-                    to={darsnomi ? `/profile/${nomi}/${darsnomi}/quiz` : "#"}
-                    className={`bg-blue-600 px-6 py-2 text-white rounded-sm ml-1 mt-3 hover:bg-blue-600 cursor-pointer ${!darsnomi ? "cursor-not-allowed opacity-50" : ""
-                      }`}>
-                    Testga o'tish
-                  </NavLink>
-                </div>
-                <Scroltop />
-              </div>
-            </div>
-          )}
+          <div className="p-6 bg-gray-700 rounded-lg shadow-lg">
+            <h1 className="text-2xl font-extrabold mb-4 text-white">{nomi}</h1>
+            <p className="text-gray-300">{data?.name}</p>
+            <div className="mt-3 text-gray-400">{data?.desc}</div>
+            <div
+              className="mt-6 iframevid p-1 mb-4"
+              dangerouslySetInnerHTML={{ __html: data?.embed }}
+            />
+            <NavLink
+              to={darsnomi ? `/profile/${nomi}/${darsnomi}/quiz` : "#"}
+              className={` bg-blue-600 px-6 py-2 text-white rounded-sm  ${!darsnomi ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              Testga o'tish
+            </NavLink>
+            <Scroltop />
+          </div>
         </Content>
       </Layout>
     </Layout>

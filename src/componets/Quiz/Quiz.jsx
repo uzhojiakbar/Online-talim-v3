@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UseGetTest from "../../Hooks/useGetTests";
 import ProfileNavbar from "../profile/Navbar/ProfileNavbar";
 import { instance } from "../../Hooks/api";
@@ -31,7 +31,7 @@ const QuizUser = () => {
     }));
   };
 
-  const finish = JSON.parse(localStorage.getItem("finish"));
+  const finish = JSON.parse(localStorage?.getItem("finish"));
 
   const handleNextQuiz = () => {
     if (!userAnswers[quizzes[currentQuizIndex]?.id]) {
@@ -82,6 +82,19 @@ const QuizUser = () => {
     ],
   };
 
+  
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false, // Chart o‘lchamini avtomatik o‘zgartirmaydi
+    plugins: {
+      legend: {
+        position: "bottom",
+      },
+    },
+  };
+
+  const navigate = useNavigate('')
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center py-10 px-4">
       <ProfileNavbar />
@@ -98,7 +111,7 @@ const QuizUser = () => {
             Natija: {score} / {quizzes.length} ({correctPercentage}%)
           </h2>
           <div className="w-1/2 mx-auto mb-6">
-            <Pie data={chartData} />
+            <Pie data={chartData} options={chartOptions} />
           </div>
           {attemptsLeft > 0 ? (
             <button
@@ -107,13 +120,16 @@ const QuizUser = () => {
             >
               Qayta urinib ko'ring (Qolgan imkoniyatlar: {attemptsLeft})
             </button>
+
           ) : (
             <h3 className="text-lg font-semibold text-red-500">
               Testni yechish imkoniyati tugadi.
             </h3>
           )}
         </div>
+
       ) : (
+
         <div className="w-full max-w-4xl">
           <div className="bg-gray-100 border p-4 rounded-lg shadow mb-4">
             <h3 className="text-lg font-bold text-gray-800 mb-2">
@@ -151,25 +167,32 @@ const QuizUser = () => {
           <button
             onClick={handleNextQuiz}
             disabled={!userAnswers[quizzes[currentQuizIndex]?.id]}
-            className={`bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 transition mt-6 ${
-              !userAnswers[quizzes[currentQuizIndex]?.id]
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-            }`}
+            className={`bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 transition mt-6 ${!userAnswers[quizzes[currentQuizIndex]?.id]
+              ? "opacity-50 cursor-not-allowed"
+              : ""
+              }`}
           >
             Keyingisiga o'tish
           </button>
+         
         </div>
+
       )}
       {/* {
         finish && correctPercentage >= 70 ? <Certificate correctPercentage={correctPercentage} fannomi={nomi} /> : ""
-      } */}
+        } */}
       {finish ? (
         <Certificate correctPercentage={correctPercentage} fannomi={nomi} />
       ) : (
         ""
       )}
+       <div className="mt-12 ">
+            <button onClick={() =>navigate(`/profile/${nomi}/`)} className="  bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 transition">Testdan chiqish</button>
+          </div>
+
     </div>
+
+
   );
 };
 

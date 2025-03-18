@@ -1,18 +1,14 @@
-import React, { useState } from 'react'
-import { instance } from './api'
+import { useQuery } from "@tanstack/react-query";
+import { instance } from "./api";
 
-export function useAddTopic() {
-    const [fanMavzulari, setFanMavzulari] = useState([])
-    const addTopics = async (fanNomi) => {
-        try {
-            const response = await instance.get(`/api/topic/${fanNomi}`)
-            setFanMavzulari(response.data)
-        } catch (error) {
-            console.log(error.response.status);
-            console.error("fanni  olishda xatolik", error)
-        }
-    }
-    
-    return ({ fanMavzulari, setFanMavzulari, addTopics })
+export function useAddTopic(fanNomi) {
+    return useQuery({
+        queryKey: ["topics", fanNomi],
+        queryFn: async () => {
+            const response = await instance.get(`/api/topic/${fanNomi}`);
+            return response.data;
+
+        },
+        enabled: !!fanNomi, 
+    });
 }
-
