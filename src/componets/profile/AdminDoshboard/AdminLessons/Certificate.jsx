@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function Certificate({ correctPercentage: score, fannomi }) {
-  const finish = JSON.parse(localStorage.getItem("finish")) || 0; // ✅ Agar yo'q bo'lsa 0 qo'yamiz
+  const finish = JSON.parse(localStorage.getItem("isFinish")) || 0; // ✅ Agar yo'q bo'lsa 0 qo'yamiz
   const userdata = JSON.parse(localStorage.getItem("myArray"));
 
   const name = userdata?.firstname;
@@ -55,6 +55,9 @@ function Certificate({ correctPercentage: score, fannomi }) {
     }
   };
 
+  console.log("FINISH",finish);
+  console.log("score",score);
+  
   return (
     <div>
       {/* Faqat test tugatilgan va natija 60+ bo'lsa tugmani chiqaramiz */}

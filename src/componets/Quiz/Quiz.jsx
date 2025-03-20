@@ -31,7 +31,7 @@ const QuizUser = () => {
     }));
   };
 
-  const finish = JSON.parse(localStorage?.getItem("finish"));
+  const finish = JSON.parse(localStorage?.getItem("isFinish"));
 
   const handleNextQuiz = () => {
     if (!userAnswers[quizzes[currentQuizIndex]?.id]) {

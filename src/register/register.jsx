@@ -110,6 +110,9 @@ function Register() {
                                     <option value="36-ATT-23">36-Att</option>
                                     <option value="35-ATT-23">35-Att</option>
                                     <option value="34-ATT-23">34-Att</option>
+                                    <option value="38-DI">38-DI</option>
+                                    <option value="39-DI">39-DI</option>
+                                    <option value="23-DI">23-DI</option>
                                 </select>
                             </label>
                         </div>
