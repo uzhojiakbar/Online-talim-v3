@@ -47,7 +47,7 @@ function DarsUser() {
       const response = await instance.get(`/api/topic/${nomi}/${darsnomi}`);
       setData(response.data);
       console.log(response.data)
-      localStorage.setItem('isFinish',response?.data?.isFinish)
+      localStorage.setItem('isFinish', response?.data?.isFinish)
     } catch (error) {
       console.error("Xatolik:", error);
     } finally {
@@ -92,11 +92,14 @@ function DarsUser() {
         </div>
       </Sider>
       <Drawer
+        className="custom-drawer"
+        bodyStyle={{ backgroundColor: "#1E293B" }}
         title="Mavzular ro'yxati"
+        headerStyle={{ backgroundColor: "#1E293B", color: 'white' }}
         placement="left"
         onClose={() => setDrawerVisible(false)}
-        visible={drawerVisible}
-      >
+        visible={drawerVisible}>
+
         {fanMavzulari?.map((item) => (
           <NavLink
             key={item.id}
@@ -106,7 +109,7 @@ function DarsUser() {
               setDrawerVisible(false);
             }}
             className={({ isActive }) =>
-              isActive ? "block bg-blue-600 text-white p-3 rounded-lg" : "block bg-gray-600 text-gray-300 p-3 rounded-lg"
+              isActive ? "block bg-blue-600 mt-2 text-white p-3 rounded-lg" : "block mt-2 bg-gray-600 text-gray-300 p-3 rounded-lg"
             }
           >
             {item.nomi}
@@ -125,7 +128,7 @@ function DarsUser() {
             <p className="text-gray-300">{data?.name}</p>
             <div className="mt-3 text-gray-400">{data?.desc}</div>
             <div
-              className="mt-6 iframevid p-1 mb-4"
+              className="mt-6 iframevid p-1 mb-4 text-white"
               dangerouslySetInnerHTML={{ __html: data?.embed }}
             />
             <NavLink
