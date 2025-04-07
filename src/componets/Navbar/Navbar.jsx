@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { IoMdClose } from "react-icons/io";
 import { MdMenu } from "react-icons/md";
 function Navbar() {
@@ -7,24 +7,40 @@ function Navbar() {
     {
       id: 1,
       name: "Bosh sahifa",
-      path: "#",
+      path: "/#",
     },
     {
       id: 2,
       name: "Darslar",
-      path: "#darslar",
+      path: "/#darslar",
     },
   ]);
 
   const [openForm, setOpenForm] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const nav = useNavigate();
+
+  const ToHome = () => {
+    nav("/");
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div
       data-aos="filip-left"
       className={`border-b border-slate-600 backdrop-blur-lg text-white flex top-0 left-0 z-50 fixed w-full  py-4 lg:px-16 sm:px-6 px-3 justify-between items-center bg-black/30`}
     >
-      <h1 className="text-3xl font-bold">Att</h1>
+      <h1
+        onClick={ToHome}
+        className="text-3xl select-none font-bold cursor-pointer "
+      >
+        Unify<span className="text-[#629a62]">.</span>{" "}
+      </h1>
 
       <div className="md:flex hidden gap-6 ">
         {navData?.map((item) => (
@@ -41,7 +57,8 @@ function Navbar() {
         <NavLink
           to={"/register"}
           onClick={() => setOpenForm(true)}
-          className="bg-[#FF6E30] px-6 py-1 rounded-sm hover:bg-[#da6735] transition-all">
+          className="bg-[#FF6E30] px-6 py-1 rounded-sm hover:bg-[#ab5c37] transition-all"
+        >
           Registratsiya
         </NavLink>
       </div>
